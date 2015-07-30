@@ -1,37 +1,61 @@
-enum OrderResult {
+//
+//  BinaryTree.swift
+//  BinaryTree-Sample
+//
+//  Created by Yury Lapitsky on 7/29/15.
+//  Copyright (c) 2015 skyylex. All rights reserved.
+//
+
+
+public enum OrderResult {
     case LeftGreater
     case RightGreaterOrEqual
 }
 
-class Node<T : Comparable> {
-    var value: T
+public class Node<T : Comparable> {
+    public var value: T
 
-    var root: Bool = false
-    var leaf: Bool { return (self.rightChild == nil) && (self.leftChild == nil) }
+    public var root: Bool = false
+    public var leaf: Bool { return (self.rightChild == nil) && (self.leftChild == nil) }
     
-    var leftChild: Node?
-    var rightChild: Node?
+    public var level: Int = 0
     
-    init(newValue: T) {
+    public var leftChild: Node?
+    public var rightChild: Node?
+    
+    public init(newValue: T) {
        value = newValue
     }
     
-    func compare(otherNode: Node) -> OrderResult {
+    public func compare(otherNode: Node) -> OrderResult {
         return (self.value > otherNode.value) ? .LeftGreater : .RightGreaterOrEqual
     }
 }
 
 
-struct BinaryTree<T: Comparable> {
-    let rootNode: Node<T>
-    let order: OrderResult
+public struct BinaryTree<T: Comparable> {
+    public let rootNode: Node<T>
+    public let order: OrderResult
     
-    init(root: Node<T>, orderRule: OrderResult) {
+    var deep: Int {
+        var result = 0
+        traverse({ node in
+            result = node.level > result ? node.level : result
+        })
+        
+        return result
+    }
+    
+    public init(root: Node<T>, orderRule: OrderResult) {
         rootNode = root
         order = orderRule
     }
     
-    internal func addNode(new: Node<T>, currentRoot: Node<T>?) {
+    public func addNode(new: Node<T>) {
+        addNode(new, currentRoot: rootNode)
+    }
+    
+    private func addNode(new: Node<T>, currentRoot: Node<T>?) {
         let root = currentRoot ?? self.rootNode
         
         if root.value > new.value {
@@ -39,33 +63,52 @@ struct BinaryTree<T: Comparable> {
                 addNode(new, currentRoot: leftNode)
             } else {
                 root.leftChild = new
+                new.level = root.level + 1
             }
         } else {
             if let rightNode = root.rightChild {
                 addNode(new, currentRoot: rightNode)
             } else {
                 root.rightChild = new
+                new.level = root.level + 1
             }
         }
     }
     
-    internal func bypass(action: ((Node<T>?) -> Void)?) {
-        bypass(self.rootNode, action:action ?? nil)
-    }
-    
-    private func bypass(current: Node<T>, action:((Node<T>?) -> Void)?) {
-        if let validAction = action {
-            validAction(nil)
+    public func traverseUpsideDown(action: (([Node<T>]) -> Void)?) {
+        let maxDeep = self.deep
+        let levelElements = (0...self.deep).map { (level : Int) -> [Node<T>] in
+            var elements = [Node<T>]()
+            self.traverse { node in
+                if node.level == level {
+                    elements.append(node)
+                }
+            }
+            return elements
         }
         
-        if let left = current.leftChild {
-            bypass(left, action: action)
-            
-            if let right = current.rightChild {
-                bypass(right, action: action)
+        if let validAction = action {
+            for elements in levelElements {
+                validAction(elements)
             }
-        } else if let right = current.rightChild {
-            bypass(right, action: action)
+        }
+    }
+    
+    public func traverse(action: ((Node<T>) -> Void)?) {
+        traverse(self.rootNode, action:action ?? nil)
+    }
+    
+    private func traverse(current: Node<T>, action:((Node<T>) -> Void)?) {
+        if let left = current.leftChild {
+            traverse(left, action: action)
+        }
+        
+        if let validAction = action {
+            validAction(current)
+        }
+        
+        if let right = current.rightChild {
+            traverse(right, action: action)
         }
     }
 }
