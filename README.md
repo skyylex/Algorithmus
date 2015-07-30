@@ -37,4 +37,4 @@ Pull requests are welcome! If you have a proposal or some kind of problem feel f
 
 ## License
 
-Algorithmus is released under an MIT license. See LICENSE for more information.
+Algorithmus is released under an MIT license. See [LICENSE](https://github.com/skyylex/Algorithmus/blob/master/LICENSE) for more information.
