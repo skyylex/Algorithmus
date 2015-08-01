@@ -14,9 +14,9 @@ At current stage it's just for fun framework, not production-ready code. It's ma
 ## Data structure list 
 #### Implemented:
 - Binary tree
+- Stack
 
 #### Todo:
-- Stack
 - Queue
 
 ## Algorithms list:
