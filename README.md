@@ -2,7 +2,7 @@
 
 ##### Common algorithms and data structure written in Swift. 
 
-At current stage it's just for fun framework, not production-ready code. It's main purpose to demonstrate Swift in algorithmic way and some algorithms in very expressive way. =)
+At current stage it's just for fun framework, not production-ready code. It's main purpose is to demonstrate Swift in algorithmic way and some algorithms in very expressive way. =)
 
 ## Goals and principles:
 
