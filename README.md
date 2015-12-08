@@ -15,19 +15,10 @@ At current stage it's just for fun framework, not production-ready code. It's ma
 #### Implemented:
 - Binary tree
 - Stack
-
-#### Todo:
-- Queue
-
-## Algorithms list:
-#### Todo:
-- Search
-- Sort
+- Trie
 
 
 ## Contacts
-
-#### https://github.com/skyylex
 
 #### yury.lapitsky@gmail.com
 
