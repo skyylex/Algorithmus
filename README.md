@@ -15,7 +15,7 @@ At current stage it's just for fun framework, not production-ready code. It's ma
 #### Implemented:
 - Binary tree
 - Stack
-- Trie
+- PrefixTree
 
 
 ## Contacts
