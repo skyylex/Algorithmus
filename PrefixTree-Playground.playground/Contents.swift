@@ -1,4 +1,4 @@
-let trie = Trie()
+let trie = PrefixTree()
 trie.insertSequence(Array("hello".characters))
 trie.insertSequence(Array("helicopter".characters))
 trie.insertSequence(Array("hammond".characters))

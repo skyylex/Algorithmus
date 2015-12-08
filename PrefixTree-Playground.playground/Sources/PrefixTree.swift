@@ -15,7 +15,7 @@ class Node {
     }
 }
 
-public class Trie {
+public class PrefixTree {
     public init() {
         
     }
