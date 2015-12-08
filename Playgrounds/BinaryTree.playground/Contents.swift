@@ -1,11 +1,3 @@
-//
-//  main.swift
-//  BinaryTree-Sample
-//
-//  Created by Yury Lapitsky on 7/29/15.
-//  Copyright (c) 2015 skyylex. All rights reserved.
-//
-
 import Foundation
 
 let root = Node<Int>(newValue: 40)
@@ -31,7 +23,7 @@ tree.addNode(Node<Int>(newValue: 30))
 let deep = tree.deep
 let maxSymbolsInValue = 5
 
-println("\n\n Text-drawn binary tree \n\n")
+print("\n\n Text-drawn binary tree \n\n")
 
 tree.traverseUpsideDown({ nodes in
     
@@ -46,12 +38,12 @@ tree.traverseUpsideDown({ nodes in
     let levelString = nodes.reduce("") { current, node in
         return current + horizontalSpaceString + String(node.value)
     }
-    println(offsetString + levelString)
+    print(offsetString + levelString)
 })
 
-println("\n\n Plain sorted list \n\n")
+print("\n\n Plain sorted list \n\n")
 
 tree.traverse { (node : Node<Int>) -> Void in
-    println(String(node.value))
+    print(String(node.value))
 }
 

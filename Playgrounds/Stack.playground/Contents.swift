@@ -1,17 +1,7 @@
-//
-//  main.swift
-//  Stack
-//
-//  Created by Yury Lapitsky on 01.08.15.
-//  Copyright (c) 2015 skyylex. All rights reserved.
-//
-
-import Foundation
-
 extension String {
     internal func reverseString() -> String {
         let stack = Stack<Character>()
-        for symbol in self {
+        for symbol in self.characters {
             stack.push(symbol)
         }
         
@@ -26,8 +16,5 @@ extension String {
 
 let sourceString = "#aibohphobia$"
 
-println("Source: " + sourceString.reverseString())
-println("Reversed: " + sourceString.reverseString())
-
-
-
+print("Source: " + sourceString.reverseString())
+print("Reversed: " + sourceString.reverseString())
