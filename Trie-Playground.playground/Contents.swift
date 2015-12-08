@@ -19,7 +19,7 @@ class Trie {
     let root = Node(isRoot: true)
     
     func allSequences() -> [[Character]] {
-        let sequences = allSequences([], currentNode: root)
+        let sequences = search([])
         return sequences
     }
     
@@ -28,7 +28,6 @@ class Trie {
     }
     
     private func search(symbols: [Character], currentSequence: Array<Character>, currentNode: Node) -> [[Character]] {
-        var resultSequences = [[Character]]()
         var canMoveFurther = false
         var extendedSequence = Array<Character>()
         
@@ -45,35 +44,14 @@ class Trie {
         
         if canMoveFurther {
             if currentNode.isLeaf {
-                resultSequences.append(extendedSequence)
+                return [extendedSequence]
             } else {
-                for childNode in currentNode.children {
-                    resultSequences += search(symbols, currentSequence: extendedSequence, currentNode:childNode)
-                }
+                let foundSequences = currentNode.children.map { search(symbols, currentSequence: extendedSequence, currentNode:$0) }
+                return foundSequences.reduce([[Character]]()) { $0 + $1}
             }
         }
         
-        return resultSequences
-    }
-    
-    private func allSequences(currentSequence: Array<Character>, currentNode: Node) -> [[Character]] {
-        var resultSequences = [[Character]]()
-        
-        var extendedSequence = Array<Character>()
-        if let currentValue = currentNode.value {
-            extendedSequence = currentSequence + [currentValue]
-            print(currentNode.level)
-        }
-        
-        if currentNode.isLeaf {
-            resultSequences.append(extendedSequence)
-        } else {
-            for childNode in currentNode.children {
-                resultSequences += allSequences(extendedSequence, currentNode:childNode)
-            }
-        }
-        
-        return resultSequences
+        return [[Character]]()
     }
     
     internal func insertSequence(newSequence:[Character]) {
@@ -81,20 +59,24 @@ class Trie {
     }
     
     internal func insertSequence(sequence: Array<Character>, currentNode:Node, level: Int = 0) {
-        var parrentNode = currentNode
         if let currentValueToInsert = sequence.first {
             let existingNodes = currentNode.children.filter { $0.value == currentValueToInsert }
             if let firstExistingNode = existingNodes.first {
                 let subSequence = sequence[1...(sequence.count - 1)]
                 self.insertSequence(Array(subSequence), currentNode: firstExistingNode, level: level + 1)
             } else {
-                var currentLevel = level + 1
-                for value in sequence {
-                    let node = Node(isRoot: false, value:value, level: currentLevel)
-                    parrentNode.children.append(node)
-                    parrentNode = node
-                    currentLevel += 1
-                }
+                directInsert(sequence, parentNode:currentNode, currentLevel:level + 1)
+            }
+        }
+    }
+    
+    private func directInsert(sequence: Array<Character>, parentNode: Node, currentLevel: Int) {
+        if let first = sequence.first {
+            let node = Node(isRoot:false, value:first, level:currentLevel)
+            parentNode.children.append(node)
+            if sequence.count >= 2 {
+                let otherSequencePart = sequence[1...(sequence.count - 1)]
+                directInsert(Array(otherSequencePart), parentNode:node, currentLevel:currentLevel + 1)
             }
         }
     }
